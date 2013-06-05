@@ -7,6 +7,7 @@ module RestCore
     Client = Builder.client(:api_key) do
       use Timeout       , 10
 
+      use DefaultQuery
       use Signature, nil
 
       use DefaultSite   , 'http://tw.partner.buy.yahoo.com/api/v1/'
@@ -17,6 +18,12 @@ module RestCore
         use ErrorHandler, lambda{ |env|
           RuntimeError.new(env[RESPONSE_BODY]['message'])}
         use ErrorDetectorHttp
+      end
+    end
+
+    class Client
+      def default_query
+        {:pkey => api_key, :ts => Time.now.to_i}
       end
     end
 
