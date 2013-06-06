@@ -4,10 +4,12 @@ require 'rest-core'
 module RestCore
   module YahooBuy
     autoload :Signature, 'rest-core/client/yahoo_buy/signature'
+    autoload :Timestamp, 'rest-core/client/yahoo_buy/timestamp'
     Client = Builder.client(:api_key) do
       use Timeout       , 10
 
       use DefaultQuery
+      use Timestamp
       use Signature, nil
 
       use DefaultSite   , 'http://tw.partner.buy.yahoo.com/api/v1/'
@@ -23,7 +25,7 @@ module RestCore
 
     class Client
       def default_query
-        {:pkey => api_key, :ts => Time.now.to_i}
+        {:pkey => api_key}
       end
     end
 
