@@ -42,7 +42,7 @@ module RestCore
         response['categories']['category']
       end
 
-      # 取得某型錄下所有的賣場
+      # 取得某型錄下的賣場
       # options:
       #   :page - 頁數(預設第一頁)
       #   :ps - 回傳筆數(5~50，預設50筆)
@@ -52,6 +52,30 @@ module RestCore
         options.merge!( :no => no, :level_no => level_no )
         response = get('getGdInfo', options)
         response['gds']['gd']
+      end
+
+
+      # 自製 api
+      # 取得某型錄下的所有賣場
+      # 需小心不要對頂級型錄使用，不然可能會導致呼叫太多次api
+      def get_all_gd_info(no, level_no, safe_mode=true)
+        level_no = self.class.get_level_no(level_no)
+
+        if safe_mode && level_no != 4
+          raise 'Getting all items under broad catalog'
+        end
+
+        default_per_page = 50
+
+        response = get('getGdInfo', :no => no, :level_no => level_no)
+        total_item = response['gds']['count'].to_i
+        total_page = ( total_item / default_per_page.to_f ).ceil
+
+        container = []
+        total_page.times do |i|
+          container.concat get_gd_info(no, level_no, :page => (i + 1), :ps => default_per_page)
+        end
+        container
       end
 
       # catalog level 型錄層級
