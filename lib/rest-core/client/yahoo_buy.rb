@@ -36,6 +36,16 @@ module RestCore
         response['categories']['category']
       end
 
+      # 取得某型錄下所有的賣場
+      # options:
+      #   :page - 頁數(預設第一頁)
+      #   :ps - 回傳筆數(5~50，預設50筆)
+      def get_gd_info(no, level_no, options={})
+        options.merge!( :no => no, :level_no => level_no )
+        response = get('getGdInfo', options)
+        response['gds']['gd']
+      end
+
       # catalog level 型錄層級
       # 把 API 中的 level_no 與 url 用到型錄層級名作對應
       CATALOG_LEVEL = ['','z','sub','catid','catitemid'].freeze
