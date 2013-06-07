@@ -11,10 +11,9 @@ module RestCore
 
       use DefaultQuery
       use Timestamp
-      use Signature, nil
+      use Signature
 
       use DefaultSite   , 'http://tw.partner.buy.yahoo.com/api/v1/'
-      use DefaultHeaders, {'Accept' => 'application/xml'}
 
       use CommonLogger  , nil
       use Cache         , nil, 600 do
