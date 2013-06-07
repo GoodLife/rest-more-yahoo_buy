@@ -30,6 +30,12 @@ module RestCore
         {:pkey => api_key}
       end
 
+      # 取得某型錄下所有的子型錄
+      def get_catalog(no, level_no)
+        response = get('getCatalog', :no => no, :level_no => level_no)
+        response['categories']['category']
+      end
+
       # catalog level 型錄層級
       # 把 API 中的 level_no 與 url 用到型錄層級名作對應
       CATALOG_LEVEL = ['','z','sub','catid','catitemid'].freeze
