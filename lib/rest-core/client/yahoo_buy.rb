@@ -64,7 +64,7 @@ module RestCore
       # 依照輸入的 level 回傳 level_no
       # level 可以是 level_no 本身或是 level 的 param 名稱
       def self.get_level_no(level)
-        if level.is_a? Integer && level > 0 && level < CATALOG_LEVEL.size
+        if level.is_a?(Integer) && level >= 0 && level < CATALOG_LEVEL.size
           return level
         end
 
