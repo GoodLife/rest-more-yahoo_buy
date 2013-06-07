@@ -29,6 +29,16 @@ module RestCore
       def default_query
         {:pkey => api_key}
       end
+
+      # catalog level 型錄層級
+      # 把 API 中的 level_no 與 url 用到型錄層級名作對應
+      CATALOG_LEVEL = ['','z','sub','catid','catitemid'].freeze
+      def self.get_catalog_level_name(level_number)
+        CATALOG_LEVEL[level_number]
+      end
+      def self.get_catalog_level_number(level_name)
+        CATALOG_LEVEL.index(level_name)
+      end
     end
 
     def self.new *args, &block
