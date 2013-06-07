@@ -30,6 +30,11 @@ module RestCore
         {:pkey => api_key}
       end
 
+      # 取得 Server unix timestamp
+      def get_curr_time
+        get('getCurrTime')['currentTime'].to_i
+      end
+
       # 取得某型錄下所有的子型錄
       def get_catalog(no, level_no)
         level_no = self.class.get_level_no(level_no)
