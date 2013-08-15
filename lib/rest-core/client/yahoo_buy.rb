@@ -39,7 +39,18 @@ module RestCore
         level_no = self.class.get_level_no(level_no)
 
         response = get('getCatalog', :no => no, :level_no => level_no)
-        response['categories']['category']
+
+        # Yahoo 的 API 設計很糟糕
+        # 當只有一個子類別時，回傳的資料就沒有包在 Array 裡
+        if categories = response['categories']['category']
+          if categories.is_a? Hash
+            [categories]
+          else
+            categories
+          end
+        else
+          []
+        end
       end
 
       # 取得某型錄下的賣場

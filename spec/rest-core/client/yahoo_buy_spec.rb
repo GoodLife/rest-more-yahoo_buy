@@ -22,4 +22,24 @@ describe RestCore::YahooBuy::Client do
       described_class.get_level_no('other').should == nil
     end
   end
+
+  describe '#get_catalog' do
+    describe 'returns array in different return results' do
+      before do
+        described_class.stub(:get_level_no)
+      end
+      it 'no result' do
+        subject.stub(:get){ {"categories"=>{"count"=>"0"}} }
+        subject.get_catalog(123,3).should == []
+      end
+      it 'single result' do
+        subject.stub(:get){ {"categories"=>{"category"=>{"no"=>"76044", "level_no"=>"4", "name"=>"NANING9", "type"=>"區"}, "count"=>"1"}} }
+        subject.get_catalog(123,3).should == [ {"no"=>"76044", "level_no"=>"4", "name"=>"NANING9", "type"=>"區"} ]
+      end
+      it 'multiple results' do
+        subject.stub(:get){ {"categories"=>{"category"=>[{"no"=>"17746", "level_no"=>"4", "name"=>"Fashion Focus", "type"=>"區"}, {"no"=>"14482", "level_no"=>"4", "name"=>"MM25下身系列", "type"=>"區"}], "count"=>"2"}} }
+        subject.get_catalog(123,3).should == [{"no"=>"17746", "level_no"=>"4", "name"=>"Fashion Focus", "type"=>"區"}, {"no"=>"14482", "level_no"=>"4", "name"=>"MM25下身系列", "type"=>"區"}]
+      end
+    end
+  end
 end
